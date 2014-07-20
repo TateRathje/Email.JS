@@ -2,29 +2,44 @@
 <html>
 <head>
 	 <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css ">
-	 <script src="bower_components/angular/angular.js"></script>
 </head>
 <body>
-	<div class="container">
+	<div class="container" ng-app='myApp' ng-controller="EmailCtrl">
 		<table class="table table-bordered table-condensed">
 			<tbody>
-				<tr>
-					<td>Guinan</td>
-					<td>It's an Erath drink. Prune juice.</td>
-					<td>Dec 24</td>
-				</tr>
-				<tr>
-					<td>Beverly Crusher</td>
-					<td>Captain always push themselves too hard.</td>
-					<td>Dec 23</td>
-				</tr>
-				<tr>
-					<td>Mom</td>
-					<td>Dont't forget to wear clean underwear today.</td>
-					<td>Nov 22</td>
+				<tr ng-repeat="email in emails" ng-click="showPopup(email)">
+					<td>{{ email.from }}</td>
+					<td>{{ email.subject }}</td>
+					<td>{{ email.date }}</td>
 				</tr>
 			</tbody>
+			<div class="modal-dialog" ng-show="isPopupVisible">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" ng-click="closePopup()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h3 class="modal-title" id="myModalLabel">{{selectedEmail.subject}}</h3>
+      	</div>
+					<div class="modal-body">
+						<strong>From:</strong> {{selectedEmail.from}} <br />
+						<strong>Date:</strong> {{selectedEmail.date}} <br />
+						<br />
+						<p>
+							{{selectedEmail.body}} <br />
+							<br />
+							Sincerely<br />
+							Your Bro
+						</p>
+					</div>
+					<div class="modal-footer">
+						<a href="#" class="btn btn-primary">Close</a>
+					</div> 
+				</div>
+			</div>
+		</div>
 		</table>
 	</div>
+	<script src="bower_components/angular/angular.js"></script>
+	<script src="js/app.js"></script>
+	<script src="js/controllers.js"></script>
 </body>
 </html>
