@@ -5,10 +5,25 @@
 </head>
 <body>
 	<div class="container" ng-app='myApp' ng-controller="EmailCtrl">
+		<ul class="nav nav-tabs">
+			<li ng-class="{active: activeTab == 'inbox'}">
+				<a ng-click="activeTab='inbox'">Inbox</a>
+			</li>
+			<li ng-class="{active: activeTab == 'sent'}">
+				<a ng-click="activeTab='send'">Sent</a></li>
+		</ul>
 		<table class="table table-bordered table-condensed">
+			<!-- Inbox -->
 			<tbody>
-				<tr ng-repeat="email in emails" ng-click="showPopup(email)">
+				<tr ng-repeat="email in emails" ng-click="showPopup(email)" ng-show="activeTab=='inbox'">
 					<td>{{ email.from }}</td>
+					<td>{{ email.subject }}</td>
+					<td>{{ email.date }}</td>
+				</tr>
+			</tbody>
+			<!-- Sent -->
+			<tr ng-repeat="email in sentEmails" ng-click="showPopup(email)" ng-show="activeTab=='sent'">
+					<td>{{ email.to }}</td>
 					<td>{{ email.subject }}</td>
 					<td>{{ email.date }}</td>
 				</tr>
@@ -31,12 +46,32 @@
 						</p>
 					</div>
 					<div class="modal-footer">
-						<a href="#" class="btn btn-primary">Close</a>
+						<a href="#" class="btn btn-primary" ng-click="closePopup()">Close</a>
 					</div> 
 				</div>
 			</div>
 		</div>
+		<div class="modal-dialog" ng-show="isComposePopupVisible">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" ng-click="closeComposePopup()"><span aria-hidden="true">&times;</span><span class="sr-only">x</span></button>
+        <h3 class="modal-title" id="myModalLabel">Compose Email</h3>
+      	</div>
+					<div class="modal-body">
+						<form>
+							<input type="text" placeholder="To" style="width:95%;" ng-model="composeEmail.to"><br />
+							<input type="text" placeholder="Subject" style="width:95%;" ng-model="composeEmail.subject"><br />
+							<textarea style="width:95%;" rows="10" ng-model="composeEmail.body"></textarea>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<a href="#" class="btn" ng-click="closeComposePopup()">Close</a>
+						<a href="#" class="btn btn-primary" ng-click="sendEmail()">Send</a>
+					</div> 
+				</div>
+			</div>
 		</table>
+		<button class="btn btn-primary" ng-click="showComposePopup()">Compose</button>
 	</div>
 	<script src="bower_components/angular/angular.js"></script>
 	<script src="js/app.js"></script>
