@@ -1,0 +1,11 @@
+{
+  "name": "email.js",
+  "description": "Angular Email App",
+  "version": "0.0.0",
+  "homepage": "https://github.com/TateRathje/Email.JS.git",
+  "dependencies": {
+    "angular": "1.2.6",
+    "bootstrap": "~3.2.0",
+    "html5-boilerplate": "~4.3.0"
+  }
+}
