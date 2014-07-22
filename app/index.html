@@ -10,25 +10,33 @@
 				<a ng-click="activeTab='inbox'">Inbox</a>
 			</li>
 			<li ng-class="{active: activeTab == 'sent'}">
-				<a ng-click="activeTab='send'">Sent</a></li>
+				<a ng-click="activeTab='sent'">Sent</a></li>
 		</ul>
-		<table class="table table-bordered table-condensed">
-			<!-- Inbox -->
+
+		<!-- Inbox -->
+		<table class="table table-bordered table-condensed" ng-show="activeTab=='inbox'">
 			<tbody>
-				<tr ng-repeat="email in emails" ng-click="showPopup(email)" ng-show="activeTab=='inbox'">
+				<tr ng-repeat="email in emails" ng-click="showPopup(email)">
 					<td>{{ email.from }}</td>
 					<td>{{ email.subject }}</td>
 					<td>{{ email.date }}</td>
 				</tr>
 			</tbody>
-			<!-- Sent -->
-			<tr ng-repeat="email in sentEmails" ng-click="showPopup(email)" ng-show="activeTab=='sent'">
+		</table>
+			
+		<!-- Sent -->
+		<table class="table table-bordered table-condensed" ng-show="activeTab=='sent'">
+			<tr ng-repeat="email in sentEmails" ng-click="showPopup(email)">
 					<td>{{ email.to }}</td>
 					<td>{{ email.subject }}</td>
-					<td>{{ email.date }}</td>
+					<td>{{ email.date | date:'MMM d' }}</td>
 				</tr>
 			</tbody>
-			<div class="modal-dialog" ng-show="isPopupVisible">
+		</table>
+
+		<button class="btn btn-primary" ng-click="showComposePopup()">Compose</button>
+
+		<div class="modal-dialog" ng-show="isPopupVisible">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" ng-click="closePopup()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
@@ -36,21 +44,22 @@
       	</div>
 					<div class="modal-body">
 						<strong>From:</strong> {{selectedEmail.from}} <br />
-						<strong>Date:</strong> {{selectedEmail.date}} <br />
+						<strong>To:</strong> {{selectedEmail.to}} <br />
+						<strong>Date:</strong> {{selectedEmail.date | date:'MMM d'}} <br />
 						<br />
 						<p>
-							{{selectedEmail.body}} <br />
-							<br />
-							Sincerely<br />
-							Your Bro
+							<span style="white-space:pre">{{selectedEmail.body}}</span>
 						</p>
 					</div>
 					<div class="modal-footer">
+						<a href="#" class="btn btn-default" ng-click="forward()">Forward</a>
+						<a href="#" class="btn btn-default" ng-click="reply()">Reply</a>
 						<a href="#" class="btn btn-primary" ng-click="closePopup()">Close</a>
 					</div> 
 				</div>
 			</div>
-		</div>
+		
+
 		<div class="modal-dialog" ng-show="isComposePopupVisible">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -65,13 +74,12 @@
 						</form>
 					</div>
 					<div class="modal-footer">
-						<a href="#" class="btn" ng-click="closeComposePopup()">Close</a>
+						<a href="#" class="btn btn-default" ng-click="closeComposePopup()">Close</a>
 						<a href="#" class="btn btn-primary" ng-click="sendEmail()">Send</a>
 					</div> 
 				</div>
 			</div>
-		</table>
-		<button class="btn btn-primary" ng-click="showComposePopup()">Compose</button>
+		
 	</div>
 	<script src="bower_components/angular/angular.js"></script>
 	<script src="js/app.js"></script>
